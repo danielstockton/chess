@@ -2,12 +2,12 @@
   (:use [clojure.test])
   (:use [chess.bitboard.utils] :reload))
 
-(deftest test-bb-rank
+(deftest test-index->rank
   (is (= (index->rank 3) 1))
   (is (= (index->rank 32) 5))
   (is (= (index->rank 63) 8)))
 
-(deftest test-bb-file
+(deftest test-index->file
   (is (= (index->file 63) 1))
   (is (= (index->file 45) 3))
   (is (= (index->file 4) 4)))
