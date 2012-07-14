@@ -1,9 +1,14 @@
 (ns chess.bitboard.data
-  (:use [chess.bitboard.utils]))
+  (:use [chess.bitboard.utils :as bbutils :only [index->rank index->file]]))
   
+; TODO complete function
+(def file-lookup
+  "Pre-calculated file attacks with occupancy lookup"
+  )
+
 (def knight-lookup 
   "
-  Precalculated knight moves so they can be looked up by index
+  Pre-calculated knight moves so they can be looked up by index
 
   user=> (print-bb (knight-lookup 26))
   00000000
@@ -34,7 +39,7 @@
 
 (def king-lookup
   "
-  Precalculated king moves so they can be looked up by index
+  Pre-calculated king moves so they can be looked up by index
   "
   [770 1797 3594 7188
    14376 28752 57504 49216
@@ -59,43 +64,43 @@
       (for [i (range 0 64)]
         (bit-xor
           ;N
-          (if (not= (bb-rank i) 8)
+          (if (not= (bbutils/index->rank i) 8)
             (bit-shift-left 1 (+ i 8))
             0)
           ;NE
           (if (and
-                (not= (bb-rank i) 8)
-                (not= (bb-file i) 8))
+                (not= (bbutils/index->rank i) 8)
+                (not= (bbutils/index->file i) 8))
             (bit-shift-left 1 (+ i 7))
             0)
           ;E
-          (if (not= (bb-file i) 8)
+          (if (not= (bbutils/index->file i) 8)
             (bit-shift-left 1 (- i 1))
             0)
           ;SE
           (if (and
-                (not= (bb-rank i) 1)
-                (not= (bb-file i) 8))
+                (not= (bbutils/index->rank i) 1)
+                (not= (bbutils/index->file i) 8))
             (bit-shift-left 1 (- i 9))
             0)
           ;S
-          (if (not= (bb-rank i) 1)
+          (if (not= (bbutils/index->rank i) 1)
             (bit-shift-left 1 (- i 8))
             0)
           ;SW
           (if (and
-                (not= (bb-rank i) 1)
-                (not= (bb-file i) 1))
+                (not= (bbutils/index->rank i) 1)
+                (not= (bbutils/index->file i) 1))
             (bit-shift-left 1 (- i 7))
             0)
           ;W
-          (if (not= (bb-file i) 1)
+          (if (not= (bbutils/index->file i) 1)
             (bit-shift-left 1 (+ i 1))
             0)
           ;NW
           (if (and
-                (not= (bb-rank i) 8)
-                (not= (bb-file i) 1))
+                (not= (bbutils/index->rank i) 8)
+                (not= (bbutils/index->file i) 1))
             (bit-shift-left 1 (+ i 9))
             0))))))
 
@@ -106,57 +111,57 @@
         (bit-xor
           ;NNE
           (if (and
-                  (not= (bb-rank i) 7) ; if statements avoid going off the edges
-                  (not= (bb-rank i) 8)
-                  (not= (bb-file i) 8)) 
+                  (not= (bbutils/index->rank i) 7) ; if statements avoid going off the edges
+                  (not= (bbutils/index->rank i) 8)
+                  (not= (bbutils/index->file i) 8)) 
             (bit-shift-left 1 (+ i 15))
             0)
           ;NEE
           (if (and
-                  (not= (bb-rank i) 8)
-                  (not= (bb-file i) 7)
-                  (not= (bb-file i) 8))
+                  (not= (bbutils/index->rank i) 8)
+                  (not= (bbutils/index->file i) 7)
+                  (not= (bbutils/index->file i) 8))
             (bit-shift-left 1 (+ i 6))
             0)
           ;SEE
           (if (and
-                  (not= (bb-rank i) 1)
-                  (not= (bb-file i) 7)
-                  (not= (bb-file i) 8))
+                  (not= (bbutils/index->rank i) 1)
+                  (not= (bbutils/index->file i) 7)
+                  (not= (bbutils/index->file i) 8))
             (bit-shift-left 1 (- i 10))
             0)
           ;SSE
           (if (and
-                  (not= (bb-rank i) 1)
-                  (not= (bb-rank i) 2)
-                  (not= (bb-file i) 8))
+                  (not= (bbutils/index->rank i) 1)
+                  (not= (bbutils/index->rank i) 2)
+                  (not= (bbutils/index->file i) 8))
             (bit-shift-left 1 (- i 17))
             0)
           ;SSW
           (if (and
-                  (not= (bb-rank i) 1)
-                  (not= (bb-rank i) 2)
-                  (not= (bb-file i) 1))
+                  (not= (bbutils/index->rank i) 1)
+                  (not= (bbutils/index->rank i) 2)
+                  (not= (bbutils/index->file i) 1))
             (bit-shift-left 1 (- i 15))
             0)
           ;SWW
           (if (and
-                  (not= (bb-rank i) 1)
-                  (not= (bb-file i) 1)
-                  (not= (bb-file i) 2))
+                  (not= (bbutils/index->rank i) 1)
+                  (not= (bbutils/index->file i) 1)
+                  (not= (bbutils/index->file i) 2))
             (bit-shift-left 1 (- i 6))
             0)
           ;NWW
           (if (and
-                  (not= (bb-rank i) 8)
-                  (not= (bb-file i) 1)
-                  (not= (bb-file i) 2))
+                  (not= (bbutils/index->rank i) 8)
+                  (not= (bbutils/index->file i) 1)
+                  (not= (bbutils/index->file i) 2))
             (bit-shift-left 1 (+ i 10))
             0)
           ;NNW
           (if (and
-                  (not= (bb-rank i) 7)
-                  (not= (bb-rank i) 8)
-                  (not= (bb-file i) 1))
+                  (not= (bbutils/index->rank i) 7)
+                  (not= (bbutils/index->rank i) 8)
+                  (not= (bbutils/index->file i) 1))
             (bit-shift-left 1 (+ i 17))
             0))))))
