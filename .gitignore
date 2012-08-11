@@ -1,4 +1,5 @@
 pom.xml
+Guardfile
 *jar
 /lib/
 /classes/

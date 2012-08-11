@@ -2,7 +2,7 @@
   
 ; TODO complete function
 (def file-lookup
-  "Pre-calculated file attacks with occupancy lookup"
+  " Pre-calculated file attacks with occupancy lookup "
   )
 
 (def knight-lookup 
@@ -37,9 +37,7 @@
    19184278881435648 38368557762871296 4679521487814656 9077567998918656])
 
 (def king-lookup
-  "
-  Pre-calculated king moves so they can be looked up by index
-  "
+  " Pre-calculated king moves so they can be looked up by index "
   [770 1797 3594 7188
    14376 28752 57504 49216
    197123 460039 920078 1840156
