@@ -95,3 +95,19 @@
     ((vec
       (partition 8 (apply str (apply interleave rows))))
       (dec file))))
+
+(defn rook-occupancy-mask
+  "Occupancy mask for a rook on the given square, including edges"
+  [index]
+  (bit-xor
+    (file-bb (index->file index))
+    (rank-bb (index->rank index))))
+
+(defn rook-relevant-occupancy-mask
+  "Relevant occupancy mask for a rook on the given square"
+  [index]
+  (bit-xor
+    (rook-occupancy-mask index)
+    (bit-and
+      edges
+      (rook-occupancy-mask index))))

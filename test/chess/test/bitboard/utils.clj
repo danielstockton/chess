@@ -40,3 +40,10 @@
   (is (= (get-file 2638848 3) '(\0 \0 \0 \0 \0 \1 \0 \0)))
   (is (= (get-file 2638848 2) '(\0 \0 \0 \0 \0 \0 \1 \0)))
   (is (= (get-file 0 1) '(\0 \0 \0 \0 \0 \0 \0 \0))))
+
+(deftest test-rook-occupancy-mask
+  (is (= (rook-occupancy-mask 24) 72340177082712321))) 
+
+(deftest test-rook-relevant-occupancy-mask
+  (is (= (rook-relevant-occupancy-mask 24) 282580897300736))
+  (is (= (rook-relevant-occupancy-mask 25) 565159647117824)))
