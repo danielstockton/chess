@@ -5,6 +5,20 @@
   " Pre-calculated file attacks with occupancy lookup "
   )
 
+(def bishop-lookup
+  "
+  Magic bitboard bishop move database 
+  [64][512] // 256K 
+  "
+  )
+
+(def rook-lookup
+  "
+  Magic bitboard rook move database
+  [64][4096] // 2048K
+  "
+  )
+
 (def knight-lookup 
   "
   Pre-calculated knight moves so they can be looked up by index

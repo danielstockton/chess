@@ -1,12 +1,47 @@
 (ns chess.bitboard.utils)
 
+(defn rank-bb
+  "Set all bits to 1 along the specified rank"
+  [rank]
+  (apply bit-or
+    (for [file [1 2 3 4 5 6 7 8]]
+      (bit-flip 0 (- (* 8 rank) file)))))
+
+(defn file-bb 
+  "Set all bits to 1 along the specified rank"
+  [file]
+  (apply bit-or
+    (for [rank [1 2 3 4 5 6 7 8]]
+      (bit-flip 0 (- (* 8 rank) file)))))
+
+; 1s all around the edge of the board
+(def edges -35604928818740737) 
+
+(defn bitscan+
+  "
+  Bitscan forward (returns index of LSB)
+  MSB <-                       -> LSB
+  H1H2H3H4H5H6H7H8...A1A2A3A4A5A6A7A8 
+  "
+  [bb]
+  (Long/numberOfTrailingZeros (Long/lowestOneBit bb)))
+
+(defn bitscan-
+  "
+  Bitscan backward (returns index of MSB)
+  MSB <-                       -> LSB
+  H1H2H3H4H5H6H7H8...A1A2A3A4A5A6A7A8 
+  "
+  [bb]
+  (Long/numberOfTrailingZeros (Long/highestOneBit bb)))
+
 (defn bb->string
   "Convert a bitboard (Long) into a string"
   [bb]
   (java.lang.Long/toBinaryString bb))
 
-(defn prec0s
-  "Adds the preceding 0s to a bitboard string so that it has length 64"
+(defn preceding-zeros
+  "Returns the preceding 0s to prepend to a bitboard string so that it has length 64"
   [bbstring]
   (apply str (take (- 64 (count bbstring)) (repeat \0))))
 
@@ -26,7 +61,7 @@
   "
   [bb]
   (let [bbstring (bb->string bb)
-        zeros (prec0s bbstring)
+        zeros (preceding-zeros bbstring)
         fullstring (str zeros bbstring)]
     (doseq [lst (map #(apply str %) (partition 8 fullstring))]
       (println lst))))
@@ -45,7 +80,7 @@
   "Returns the given rank from the given bitboard"
   [bb rank]
   (let [bbstring (bb->string bb)
-        zeros (prec0s bbstring)
+        zeros (preceding-zeros bbstring)
         fullstring (str zeros bbstring)
         rows (vec (partition 8 fullstring))]
     (rows (- 7 (dec rank)))))
@@ -54,7 +89,7 @@
   "Returns the given file from the given bitboard"
   [bb file]
   (let [bbstring (bb->string bb)
-        zeros (prec0s bbstring)
+        zeros (preceding-zeros bbstring)
         fullstring (str zeros bbstring)
         rows (partition 8 fullstring)]
     ((vec
