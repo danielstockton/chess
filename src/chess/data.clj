@@ -1,4 +1,4 @@
-;;; Useful constants and data 
+;;; Useful constants and data
 
 (ns chess.data)
 

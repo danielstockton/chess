@@ -33,7 +33,7 @@
 
 (defn evaluator
   "Dynamic evaluation of a game tree. Returns a number representing how good
-  the root position is. Uses minimax algorithm"
+  the root position is. Uses minimax algorithm."
   [static-evaluator]
   (fn [tree]
     (minimize static-evaluator tree)))
@@ -41,7 +41,7 @@
 (defn best-move
   "Get the best computer move for the given game tree.
   static-evaluator evaluates single positions, without looking at the tree, and
-  returning a number"
+  returning a number."
   [tree static-evaluator]
   (:node (apply max-key
                 (evaluator static-evaluator)
